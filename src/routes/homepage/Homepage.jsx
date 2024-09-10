@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom'
 import './Homepage.css'
+import { TypeAnimation } from 'react-type-animation'
+import Human1 from './../../../public/human1.jpeg'
+import Human2 from './../../../public/human2.jpeg'
+import Bot from './../../../public/bot.png'
+import { useState } from 'react'
 
 function Homepage() {
+
+  const [ typingStatus, setTypingStatus ] = useState("Human1")
+
   return (
     <div className='homepage'>
       <img src="../../../public/orbital.png" alt="orbital" className='orbital' />
@@ -16,7 +24,43 @@ function Homepage() {
           <div className="bgContainer">
             <div className="bg"></div>
           </div>
-          <img src="/../../public/bot.png" alt="bot" className='bot'/>
+          <img src={Bot} alt="bot" className='bot'/>
+          <div className="chat">
+            <img src={typingStatus === "Human1" ? Human1 : typingStatus === "Human2" ? Human2 :  Bot } alt='chatbot' />
+            <TypeAnimation
+              sequence={[
+                // Same substring at the start will only be typed out once, initially
+                'Human: We produce food for Mice',
+                2000, () => {
+                  setTypingStatus("Bot")
+                },
+                'Bot: We produce food for Hamsters',
+                2000, () => {
+                  setTypingStatus("Human2")
+                },
+                'Human: We produce food for Guinea Pigs',
+                2000, () => {
+                  setTypingStatus("Bot")
+                },
+                'Bot: We produce food for Chinchillas',
+                2000, () => {
+                  setTypingStatus("Human1")
+                },
+              ]}
+              wrapper="span"
+              repeat={Infinity}
+              cursor={true}
+              omitDeletionAnimation={true}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="terms">
+        <img src="/public/logo.png" alt='logo' />
+        <div className="links">
+          <Link to="/">Terms of Service</Link>
+          <span>|</span>
+          <Link to="/">Privacy Policy</Link>
         </div>
       </div>
     </div>
