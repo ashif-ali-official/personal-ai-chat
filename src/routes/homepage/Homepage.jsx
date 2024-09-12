@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import './Homepage.css'
 import { TypeAnimation } from 'react-type-animation'
-import Human1 from './../../../public/human1.jpeg'
-import Human2 from './../../../public/human2.jpeg'
-import Bot from './../../../public/bot.png'
+import Human1 from '/human1.jpeg'
+import Human2 from '/human2.jpeg'
+import Bot from '/bot.png'
 import { useState } from 'react'
 
 function Homepage() {
@@ -12,7 +12,7 @@ function Homepage() {
 
   return (
     <div className='homepage'>
-      <img src="../../../public/orbital.png" alt="orbital" className='orbital' />
+      <img src="/orbital.png" alt="orbital" className='orbital' />
       <div className="left">
         <h1>Achillis AI</h1>
         <h2>Supercharge your creativity and productivity</h2>
@@ -56,7 +56,7 @@ function Homepage() {
         </div>
       </div>
       <div className="terms">
-        <img src="/public/logo.png" alt='logo' />
+        <img src="/logo.png" alt='logo' />
         <div className="links">
           <Link to="/">Terms of Service</Link>
           <span>|</span>

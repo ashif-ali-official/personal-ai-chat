@@ -25,7 +25,7 @@ function ChatList() {
         </div>
         <hr />
         <div className="upgrade">
-            <img src="./../../public/logo.png" alt='' />
+            <img src="/logo.png" alt='' />
             <div className="texts">
                 <span>Upgrade to Achillis AI Pro</span>
                 <span>Get unlimited access to all the features</span>

@@ -14,7 +14,7 @@ function RootLayout() {
       <div className='rootLayout'>
         <header>
           <Link to="/" className='logo'>
-              <img src='../../public/logo.png' alt='' />
+              <img src='/logo.png' alt='' />
               <span>ACHILLIS AI</span>
           </Link>
           <div className='user'>
