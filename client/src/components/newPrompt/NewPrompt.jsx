@@ -2,8 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import './NewPrompt.css'
 import Upload from '../upload/Upload'
 import { IKImage } from 'imagekitio-react'
+import model from './../../lib/Gemini'
+import Markdown from 'react-markdown'
 
 function NewPrompt() {
+
+    const [ question, setQuestion ] = useState("")
+    const [ answer, setAnswer ] = useState("")
 
     const [ img, setImg ] = useState({
         isLoading:false,
@@ -15,7 +20,22 @@ function NewPrompt() {
 
     useEffect(() => {
         endRef.current.scrollIntoView({behavior: 'smooth'})
-    }, [])
+    }, [question,answer,img.dbData])
+
+    const add = async (text) => {
+        setQuestion(text)
+        const result = await model.generateContent(text);
+        setAnswer(result.response.text());
+        
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const text = e.target.text.value;
+        if(!text) return;
+        add(text);
+    }
 
   return (
     <>  
@@ -28,11 +48,13 @@ function NewPrompt() {
                 transformation={[{ width: 380}]}
             />
         )}
+        {question && <div className='message user'>{question}</div>}
+        {answer && <div className='message'><Markdown>{answer}</Markdown></div>}
         <div className="endChat" ref={endRef}></div>
-        <form action="" className='newForm'>
+        <form className='newForm' onSubmit={handleSubmit}>
             <Upload setImg={setImg}/>
             <input id='file' type='file' multiple={false} hidden />
-            <input type="text" placeholder='Ask me anything...' />
+            <input type="text" name='text' placeholder='Ask me anything...' />
             <button>
                 <img src='/arrow.png' alt='' />
             </button>
