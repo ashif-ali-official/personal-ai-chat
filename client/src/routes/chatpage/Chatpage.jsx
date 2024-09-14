@@ -1,34 +1,50 @@
 import './Chatpage.css'
 import NewPrompt from '../../components/newPrompt/NewPrompt'
+import { useQuery } from '@tanstack/react-query'
+import { useLocation } from 'react-router-dom'
+import Markdown from 'react-markdown'
+import { IKImage } from 'imagekitio-react'
 
 function Chatpage() {
+
+  const path = useLocation().pathname
+  const chatId = path.split("/").pop()
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ['chat', chatId],
+    queryFn: () =>
+      fetch(`${import.meta.env.VITE_API_URL}/api/chats/${chatId}`,{
+        credentials:"include"
+      }).then((res) => res.json()),
+  })
 
   return (
     <div className='chatPage'>
       <div className="wrapper">
-        <div className="chat">
-          <div className="message">Test Message from AI</div>
-          <div className="message user">Test Message from User</div>
-          <div className="message">Second Test Message from AI</div>
-          <div className="message user">Second Test Message from User</div>
-          <div className="message">Third Test Message from AI</div>
-          <div className="message user">Third Test Message from User</div>
-          <div className="message">Fourth Test Message from AI</div>
-          <div className="message user">Fourth Test Message from User</div>
-          <div className="message">Fifth Test Message from AI</div>
-          <div className="message user">Fifth Test Message from User</div>
-          <div className="message">Sixth Test Message from AI</div>
-          <div className="message user">Sixth Test Message from User</div>
-          <div className="message">Seventh Test Message from AI</div>
-          <div className="message user">Seventh Test Message from User</div>
-          <div className="message">Eighth Test Message from AI</div>
-          <div className="message user">Eighth Test Message from User</div>
-          <div className="message">Ninth Test Message from AI</div>
-          <div className="message user">Ninth Test Message from User</div>
-          <div className="message">Tenth Test Message from AI</div>
-          <div className="message user">Tenth Test Message from User</div>
-          
-          <NewPrompt />
+        <div className="chat" key="">
+          { isPending
+          ? "Loading..." 
+          : error 
+          ? "Something went wrong!" 
+          : data?.history?.map( (message,i) => (
+            <>
+              {message.img && (
+                <IKImage 
+                  urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+                  path={message.img}
+                  height="300"
+                  width="400"
+                  transformation={ [ { height: 300, width: 400}]}
+                  loading='lazy'
+                  lqip={{active: true, quality: 20}}
+                />
+              )}
+              <div className={message.role === "user" ? "message user" : "message"} key={i}>
+                <Markdown>{message.parts[0].text}</Markdown>
+              </div>
+            </>
+          ))}
+          {data && <NewPrompt data={data}/>}
         </div>
       </div>
     </div>

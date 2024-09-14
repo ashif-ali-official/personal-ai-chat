@@ -1,3 +1,7 @@
+.roundedIkImage{
+    border-radius: 10px;
+}
+
 .endChat{
     padding-bottom: 100px;
 }
